@@ -1,55 +1,72 @@
-\documentclass{article}
+\documentclass[a4paper, 12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[french]{babel}
+\usepackage{amsmath, amssymb}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{amsmath}
 \usepackage{listings}
+\usepackage{xcolor}
 \usepackage{geometry}
 \geometry{margin=1in}
 
-\begin{document}
+\lstset{
+    language=SQL,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{orange},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2,
+    captionpos=b
+}
 
-\title{Système de Base de Données pour le Site de Préférences Vidéo}
-\author{Projet de Base de Données}
-\date{\today}
+\title{Projet de système de base de données pour le site de préférences vidéo}
+\author{}
+\date{}
+
+\begin{document}
 
 \maketitle
 
-\tableofcontents
-\newpage
+\section*{Aperçu du projet}
 
-\section{Aperçu du Projet}
+Le but de ce projet est de concevoir et d'implémenter un système de base de données robuste pour un site de replay vidéo qui gère les inscriptions des utilisateurs, les détails des vidéos, l'historique de visionnage et les suggestions personnalisées de vidéos. La plateforme permettra aux utilisateurs d'explorer des vidéos par catégories, de suivre leurs favoris et de recevoir des recommandations personnalisées basées sur la popularité des vidéos. La base de données gérera également le cycle de vie des vidéos, y compris l'archivage du contenu plus ancien.
 
-L'objectif de ce projet est de concevoir et d'implémenter un système de base de données robuste pour un site de replay vidéo qui gère les inscriptions des utilisateurs, les détails des vidéos, l'historique de visionnage et les suggestions de vidéos personnalisées. La plateforme permettra aux utilisateurs d'explorer des vidéos par catégories, de suivre leurs favoris et de recevoir des recommandations personnalisées basées sur la popularité des vidéos. La base de données gérera également le cycle de vie des vidéos, y compris l'archivage des contenus plus anciens.
-
-\section{Objectifs}
+\section*{Objectifs}
 
 \begin{enumerate}
-    \item Développer une base de données relationnelle pour gérer :
-    \begin{itemize}
-        \item \textbf{Informations utilisateur} : Inscription, identifiants de connexion, détails du profil et préférences.
-        \item \textbf{Détails des vidéos} : Métadonnées, disponibilité, catégorisation et cycle de vie.
-        \item \textbf{Activité utilisateur} : Historique de visionnage, favoris et abonnements.
-        \item \textbf{Suggestions} : Recommandations personnalisées basées sur la popularité récente des vidéos.
-    \end{itemize}
-    \item Assurer que la base de données puisse supporter des fonctionnalités telles que :
-    \begin{itemize}
-        \item Suivi de la disponibilité des vidéos et automatisation de l'archivage après expiration de la période de visionnage.
-        \item Génération de suggestions dynamiques pour les utilisateurs enregistrés.
-        \item Enregistrement des interactions utilisateur pour des expériences personnalisées et des analyses historiques.
-    \end{itemize}
+    \item \textbf{Développer une base de données relationnelle pour gérer :}
+    \begin{enumerate}
+        \item \textbf{Informations des utilisateurs} : inscription, identifiants de connexion, détails du profil et préférences.
+        \item \textbf{Détails des vidéos} : métadonnées, disponibilité, catégorisation et cycle de vie.
+        \item \textbf{Activité des utilisateurs} : historique de visionnage, favoris et abonnements.
+        \item \textbf{Suggestions} : recommandations personnalisées basées sur la popularité récente des vidéos.
+    \end{enumerate}
+    \item \textbf{Assurer que la base de données peut supporter des fonctionnalités telles que :}
+    \begin{enumerate}
+        \item Suivi de la disponibilité des vidéos et automatisation de l'archivage après l'expiration de la période de visionnage.
+        \item Génération de suggestions de visionnage dynamiques pour les utilisateurs inscrits.
+        \item Enregistrement des interactions des utilisateurs pour des expériences personnalisées et des analyses historiques.
+    \end{enumerate}
 \end{enumerate}
 
-\section{Portée}
+\section*{Portée}
 
-\subsection{Entités de la Base de Données}
+\subsection*{Entités de la base de données}
 
 \begin{itemize}
-    \item \textbf{Utilisateurs} :
+    \item \textbf{Utilisateurs :}
     \begin{itemize}
-        \item \textbf{Attributs} : Identifiant, mot de passe, nom, prénom, date de naissance, email, préférences (catégories d'intérêt) et statut d'abonnement à la newsletter.
+        \item \textbf{Attributs} : Identifiant (login), mot de passe, nom de famille, prénom, date de naissance, email, préférences (catégories d'intérêt) et statut d'abonnement à la newsletter.
         \item \textbf{Fonctionnalités} :
         \begin{itemize}
             \item Suivre les vidéos favorites.
@@ -57,178 +74,178 @@ L'objectif de ce projet est de concevoir et d'implémenter un système de base d
             \item Accéder à l'historique de visionnage.
         \end{itemize}
     \end{itemize}
-    \item \textbf{Vidéos} :
+    \item \textbf{Vidéos :}
     \begin{itemize}
         \item \textbf{Attributs} : Nom, description, durée, date de sortie, pays d'origine, support multilingue, format d'image et statut de disponibilité (actif/archivé).
         \item \textbf{Fonctionnalités} :
         \begin{itemize}
-            \item Classées en catégories (par exemple, culture, cinéma).
+            \item Catégorisées en genres (ex. : culture, cinéma).
             \item Support des émissions à plusieurs épisodes.
             \item Gestion du cycle de vie (disponibilité minimale de 7 jours, règles d'archivage).
         \end{itemize}
     \end{itemize}
-    \item \textbf{Historique de Visionnage} :
+    \item \textbf{Historique de visionnage :}
     \begin{itemize}
         \item \textbf{Attributs} : ID utilisateur, ID vidéo, date de visionnage.
         \item \textbf{Fonctionnalités} :
         \begin{itemize}
-            \item Maintenir un enregistrement des vidéos visionnées par chaque utilisateur.
+            \item Maintenir un enregistrement des vidéos visionnées pour chaque utilisateur.
         \end{itemize}
     \end{itemize}
-    \item \textbf{Suggestions} :
+    \item \textbf{Suggestions :}
     \begin{itemize}
-        \item Générées en fonction de :
+        \item \textbf{Générées en fonction de} :
         \begin{itemize}
-            \item Popularité au sein des catégories (nombre de visionnages au cours des deux dernières semaines).
+            \item Popularité au sein des catégories (nombre de vues au cours des deux dernières semaines).
             \item Abonnements de l'utilisateur aux émissions.
         \end{itemize}
     \end{itemize}
 \end{itemize}
 
-\subsection{Fonctionnalités Clés}
+\section*{Principales fonctionnalités}
 
 \begin{enumerate}
-    \item \textbf{Gestion des Utilisateurs} :
+    \item \textbf{Gestion des utilisateurs :}
     \begin{itemize}
         \item Permettre aux utilisateurs de créer des comptes, de se connecter et de gérer leurs préférences.
-        \item Fournir l'option de s'abonner aux newsletters et à des catégories spécifiques de programmes.
+        \item Fournir l'option de s'abonner aux newsletters et à des catégories de programmes spécifiques.
     \end{itemize}
-    \item \textbf{Cycle de Vie des Vidéos} :
+    \item \textbf{Cycle de vie des vidéos :}
     \begin{itemize}
-        \item Archiver automatiquement les vidéos après une durée spécifique tout en garantissant au moins 7 jours de disponibilité.
+        \item Archiver automatiquement les vidéos après une durée spécifique tout en assurant au moins 7 jours de disponibilité.
     \end{itemize}
-    \item \textbf{Expérience de Visionnage} :
+    \item \textbf{Expérience de visionnage :}
     \begin{itemize}
         \item Permettre aux utilisateurs de marquer des vidéos comme favorites et de les afficher sur une page personnalisée.
-        \item Mettre en évidence les vidéos approchant de la fin de leur disponibilité.
+        \item Mettre en évidence les vidéos proches de la fin de leur disponibilité.
     \end{itemize}
-    \item \textbf{Système de Recommandation} :
+    \item \textbf{Système de recommandation :}
     \begin{itemize}
         \item Générer des suggestions basées sur la popularité des catégories au cours des deux dernières semaines.
     \end{itemize}
-    \item \textbf{Analyse de Données} :
+    \item \textbf{Analyse des données :}
     \begin{itemize}
-        \item Suivre les visionnages de vidéos et les tendances de popularité.
+        \item Suivre les vues des vidéos et les tendances de popularité.
     \end{itemize}
 \end{enumerate}
 
-\section{Entités}
+\section*{Entités}
 
 Voici un aperçu détaillé des entités et de leurs attributs associés :
 
-\subsection{Utilisateur}
+\subsection*{1. Utilisateur}
 
 \begin{itemize}
     \item \textbf{Attributs} :
     \begin{itemize}
-        \item \textbf{Identifiant} (Unique)
-        \item \textbf{Mot de passe}
-        \item \textbf{Prénom}
-        \item \textbf{Nom}
-        \item \textbf{Date de naissance}
-        \item \textbf{Adresse email}
-        \item \textbf{Catégories d'intérêt}
-        \item \textbf{Abonnement à la newsletter hebdomadaire} (Booléen : Oui/Non)
+        \item Login (Identifiant unique)
+        \item Mot de passe
+        \item Prénom
+        \item Nom de famille
+        \item Date de naissance
+        \item Adresse email
+        \item Catégories d'intérêt
+        \item Abonnement à la newsletter hebdomadaire (Booléen : Oui/Non)
     \end{itemize}
     \item \textbf{Relations} :
     \begin{itemize}
-        \item S'abonne à des émissions (Relation Plusieurs-à-Plusieurs avec \textbf{Émission})
-        \item Marque des vidéos comme favorites (Relation Plusieurs-à-Plusieurs avec \textbf{Vidéo})
-        \item Possède un historique de visionnage (Relation Un-à-Plusieurs avec \textbf{Visionnage Vidéo})
+        \item S'abonne à des émissions (Plusieurs-à-plusieurs avec Programme)
+        \item Marque des vidéos comme favorites (Plusieurs-à-plusieurs avec Vidéo)
+        \item A un historique de visionnage (Un-à-plusieurs avec Visionnage Vidéo)
     \end{itemize}
 \end{itemize}
 
-\subsection{Vidéo}
+\subsection*{2. Vidéo}
 
 \begin{itemize}
     \item \textbf{Attributs} :
     \begin{itemize}
-        \item \textbf{ID Vidéo} (Unique)
-        \item \textbf{Nom}
-        \item \textbf{Description}
-        \item \textbf{Durée}
-        \item \textbf{Date de sortie}
-        \item \textbf{Pays d'origine}
-        \item \textbf{Disponibilité multilingue} (Booléen : Oui/Non)
-        \item \textbf{Format d'image}
-        \item \textbf{Statut} (Disponible/Archivé)
+        \item ID Vidéo (Identifiant unique)
+        \item Nom
+        \item Description
+        \item Durée
+        \item Date de sortie
+        \item Pays d'origine
+        \item Disponibilité multilingue (Booléen : Oui/Non)
+        \item Format d'image
+        \item Statut (Disponible/Archivé)
     \end{itemize}
     \item \textbf{Relations} :
     \begin{itemize}
-        \item Appartient à un programme (Relation Plusieurs-à-Un avec \textbf{Programme})
-        \item Apparaît dans les favoris des utilisateurs (Relation Plusieurs-à-Plusieurs avec \textbf{Utilisateur})
-        \item Visionnée dans l'historique des utilisateurs (Relation Un-à-Plusieurs avec \textbf{Visionnage Vidéo})
+        \item Appartient à un programme (Plusieurs-à-un avec Programme)
+        \item Apparaît dans les favoris de l'utilisateur (Plusieurs-à-plusieurs avec Utilisateur)
+        \item Vue dans l'historique de l'utilisateur (Un-à-plusieurs avec Visionnage Vidéo)
     \end{itemize}
 \end{itemize}
 
-\subsection{Programme}
+\subsection*{3. Programme}
 
 \begin{itemize}
     \item \textbf{Attributs} :
     \begin{itemize}
-        \item \textbf{ID Programme} (Unique)
-        \item \textbf{Nom}
-        \item \textbf{Catégorie} (e.g., Culture, Cinéma)
+        \item ID Programme (Identifiant unique)
+        \item Nom
+        \item Catégorie (ex. : Culture, Cinéma)
     \end{itemize}
     \item \textbf{Relations} :
     \begin{itemize}
-        \item Inclut des épisodes/vidéos (Relation Un-à-Plusieurs avec \textbf{Vidéo})
+        \item Inclut des épisodes/vidéos (Un-à-plusieurs avec Vidéo)
     \end{itemize}
 \end{itemize}
 
-\subsection{Visionnage Vidéo}
+\subsection*{4. Visionnage Vidéo}
 
 \begin{itemize}
     \item \textbf{Attributs} :
     \begin{itemize}
-        \item \textbf{ID Visionnage} (Unique)
-        \item \textbf{ID Utilisateur} (Clé étrangère vers \textbf{Utilisateur})
-        \item \textbf{ID Vidéo} (Clé étrangère vers \textbf{Vidéo})
-        \item \textbf{Horodatage du visionnage}
+        \item ID Visionnage (Identifiant unique)
+        \item ID Utilisateur (Clé étrangère vers Utilisateur)
+        \item ID Vidéo (Clé étrangère vers Vidéo)
+        \item Horodatage du visionnage
     \end{itemize}
     \item \textbf{Relations} :
     \begin{itemize}
-        \item Suit l'historique de visionnage de l'utilisateur (Relation Plusieurs-à-Un avec \textbf{Utilisateur})
-        \item Indique quelle vidéo a été visionnée (Relation Plusieurs-à-Un avec \textbf{Vidéo})
+        \item Suit l'historique de visionnage des vidéos de l'utilisateur (Plusieurs-à-un avec Utilisateur)
+        \item Suit quelle vidéo a été visionnée (Plusieurs-à-un avec Vidéo)
     \end{itemize}
 \end{itemize}
 
-\subsection{Catégorie}
+\subsection*{5. Catégorie}
 
 \begin{itemize}
     \item \textbf{Attributs} :
     \begin{itemize}
-        \item \textbf{ID Catégorie} (Unique)
-        \item \textbf{Nom}
+        \item ID Catégorie (Identifiant unique)
+        \item Nom
     \end{itemize}
     \item \textbf{Relations} :
     \begin{itemize}
-        \item Associée à des programmes (Relation Un-à-Plusieurs avec \textbf{Programme})
+        \item Associée à des programmes (Un-à-plusieurs avec Programme)
     \end{itemize}
 \end{itemize}
 
-\subsection{Suggestions de Visionnage}
+\subsection*{6. Suggestions de Visionnage}
 
 \begin{itemize}
     \item \textbf{Attributs} :
     \begin{itemize}
-        \item \textbf{ID Suggestion} (Unique)
-        \item \textbf{Horodatage de génération}
-        \item \textbf{Données de popularité de catégorie} (Nombre de visionnages au cours des deux dernières semaines)
+        \item ID Suggestion (Identifiant unique)
+        \item Horodatage de génération
+        \item Données de popularité de catégorie (Nombre de vues au cours des deux dernières semaines)
     \end{itemize}
     \item \textbf{Relations} :
     \begin{itemize}
-        \item Vidéos suggérées (Relation Un-à-Plusieurs avec \textbf{Vidéo})
+        \item Vidéos suggérées (Un-à-plusieurs avec Vidéo)
     \end{itemize}
 \end{itemize}
 
-\section{Création de la Base de Données}
+\section*{Création de la Base de Données}
 
-J'ai utilisé PostgreSQL 17 pour la gestion de la base de données.
+J'ai utilisé \textbf{PostgreSQL 17} pour la gestion de la base de données.
 
-\subsection{Tables SQL}
+\subsection*{Schéma SQL}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 -- 1. Table Utilisateurs
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
@@ -238,11 +255,11 @@ CREATE TABLE users (
     last_name VARCHAR(50),
     date_of_birth DATE,
     email VARCHAR(100) UNIQUE,
-    interested_categories TEXT[], -- Tableau de catégories
+    interested_categories TEXT[], -- Tableau de cat'egories
     newsletter_subscription BOOLEAN DEFAULT FALSE
 );
 
--- 2. Table Catégories
+-- 2. Table Cat'egories
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
@@ -255,7 +272,7 @@ CREATE TABLE programs (
     category_id INT REFERENCES categories(category_id) ON DELETE SET NULL
 );
 
--- 4. Table Vidéos
+-- 4. Table Vid'eos
 CREATE TABLE videos (
     video_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -269,14 +286,14 @@ CREATE TABLE videos (
     program_id INT REFERENCES programs(program_id) ON DELETE CASCADE
 );
 
--- 5. Table Vidéos Favorites (Relation Plusieurs-à-Plusieurs entre Utilisateurs et Vidéos)
+-- 5. Table Vid'eos Favorites (Relation Plusieurs-`a-plusieurs entre Utilisateurs et Vid'eos)
 CREATE TABLE favorite_videos (
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
     video_id INT REFERENCES videos(video_id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, video_id)
 );
 
--- 6. Table Visionnages Vidéo
+-- 6. Table Visionnage Vid'eo
 CREATE TABLE video_viewings (
     viewing_id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
@@ -292,7 +309,7 @@ CREATE TABLE viewing_suggestions (
     video_id INT REFERENCES videos(video_id) ON DELETE CASCADE
 );
 
--- 8. Table Programmes Abonnés (Relation Plusieurs-à-Plusieurs entre Utilisateurs et Programmes)
+-- 8. Table Programmes Abonn'es (Relation Plusieurs-`a-plusieurs entre Utilisateurs et Programmes)
 CREATE TABLE subscribed_programs (
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
     program_id INT REFERENCES programs(program_id) ON DELETE CASCADE,
@@ -300,27 +317,37 @@ CREATE TABLE subscribed_programs (
 );
 \end{lstlisting}
 
-Après exécution, pour voir la liste des tables, j'utilise la requête suivante :
+Après les avoir exécutées, pour voir la liste des tables, j'ai écrit la requête ci-dessous :
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 SELECT * FROM pg_catalog.pg_tables WHERE schemaname='public';
 \end{lstlisting}
 
-\includegraphics[width=\textwidth]{photo1.jpg}
+\textbf{Illustration de la liste des tables :}
 
-\subsection{Modèle E/A}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{photo1.jpg}
+\end{center}
 
-\includegraphics[width=\textwidth]{photo2.jpg}
+\section*{Modèle Entité/Association}
 
-\subsection{Modèle ERD}
+\textbf{Diagramme E/A :}
 
-\includegraphics[width=\textwidth]{photo3.jpg}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{photo2.jpg}
+\end{center}
 
-\section{Requêtes SQL}
+\textbf{Le modèle ERD est :}
 
-\subsection{Nombre de visionnages de vidéos par catégorie pour les visionnages de moins de deux semaines}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{photo3.jpg}
+\end{center}
 
-\begin{lstlisting}[language=SQL]
+\section*{Requêtes SQL}
+
+\subsection*{1. Nombre de vues des vidéos par catégorie, pour les vues datant de moins de deux semaines}
+
+\begin{lstlisting}
 SELECT 
     c.name AS category_name,
     COUNT(vv.viewing_id) AS total_views
@@ -340,9 +367,9 @@ ORDER BY
     total_views DESC;
 \end{lstlisting}
 
-\subsection{Par utilisateur, le nombre d'abonnements, de favoris et de vidéos visionnées}
+\subsection*{2. Par utilisateur, le nombre d'abonnements, de favoris et de vidéos visionnées}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 SELECT 
     u.user_id,
     u.first_name || ' ' || u.last_name AS user_name,
@@ -370,11 +397,15 @@ ORDER BY
     u.user_id;
 \end{lstlisting}
 
-\subsection{Nombre de visionnages par des utilisateurs français et allemands, différence triée par valeur absolue}
+\subsection*{Ajout de la colonne pays à la table utilisateurs}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 ALTER TABLE users ADD COLUMN country VARCHAR(50);
+\end{lstlisting}
 
+\subsection*{3. Comparaison des vues des vidéos entre la France et l'Allemagne}
+
+\begin{lstlisting}
 SELECT 
     v.video_id,
     v.name AS video_name,
@@ -401,9 +432,9 @@ ORDER BY
     ABS(COALESCE(french_views.count, 0) - COALESCE(german_views.count, 0)) DESC;
 \end{lstlisting}
 
-\subsection{Épisodes ayant au moins deux fois plus de visionnages que la moyenne des autres épisodes du programme}
+\subsection*{4. Épisodes de programmes ayant au moins deux fois plus de spectateurs que la moyenne des autres épisodes du programme}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 SELECT 
     v.video_id,
     v.name AS episode_name,
@@ -438,9 +469,9 @@ ORDER BY
     episode_viewers DESC;
 \end{lstlisting}
 
-\subsection{Les 10 paires de vidéos apparaissant le plus souvent simultanément dans l'historique de visionnage des utilisateurs}
+\subsection*{5. Les 10 paires de vidéos apparaissant le plus souvent simultanément dans l'historique de visionnage d'un utilisateur}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 SELECT 
     vh1.video_id AS video_1,
     vh2.video_id AS video_2,
@@ -458,11 +489,11 @@ ORDER BY
 LIMIT 10;
 \end{lstlisting}
 
-\section{Procédures et Fonctions PL/SQL}
+\section*{Procédures et fonctions PL/SQL}
 
-\subsection{Fonction pour convertir les informations d'une vidéo au format JSON}
+\subsection*{1. Fonction pour convertir les informations d'une vidéo en format JSON}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CREATE OR REPLACE FUNCTION get_video_json(video_id_input INT)
 RETURNS JSON AS $$
 DECLARE
@@ -494,24 +525,45 @@ END;
 $$ LANGUAGE plpgsql;
 \end{lstlisting}
 
-\textbf{Utilisation} :
+\textbf{Utilisation :}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 SELECT get_video_json(1);
 \end{lstlisting}
 
-\subsection{Procédure pour générer le texte initial de la newsletter hebdomadaire}
+\textbf{Résultat :}
 
-\begin{lstlisting}[language=SQL]
+\begin{verbatim}
+{
+    "video_id": 1,
+    "name": "Vidéo Exemple",
+    "description": "Ceci est une vidéo exemple.",
+    "duration": "00:30:00",
+    "release_date": "2024-01-01",
+    "country_of_origin": "USA",
+    "multi_language_available": true,
+    "image_format": "HD",
+    "status": "Available",
+    "program": {
+        "program_id": 10,
+        "program_name": "Programme Exemple"
+    }
+}
+\end{verbatim}
+
+\subsection*{2. Procédure pour générer un texte initial de newsletter avec les sorties de la semaine}
+
+\begin{lstlisting}
 CREATE OR REPLACE PROCEDURE generate_weekly_newsletter()
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    current_week_start DATE := DATE_TRUNC('week', CURRENT_DATE);
-    current_week_end DATE := current_week_start + INTERVAL '6 days';
-    weekly_releases TEXT := '';
+    current_week_start DATE := DATE_TRUNC('week', CURRENT_DATE); -- D'ebut de la semaine en cours
+    current_week_end DATE := current_week_start + INTERVAL '6 days'; -- Fin de la semaine en cours
+    weekly_releases TEXT := ''; -- Accumulateur pour les sorties de la semaine
     video_record RECORD;
 BEGIN
+    -- Parcourir toutes les sorties vid'eo de la semaine
     FOR video_record IN 
         SELECT 
             name, 
@@ -522,28 +574,42 @@ BEGIN
         WHERE 
             release_date BETWEEN current_week_start AND current_week_end
     LOOP
+        -- Ajouter chaque vid'eo au texte de la newsletter
         weekly_releases := weekly_releases || 
-            '• ' || video_record.name || ' (Sortie le : ' || video_record.release_date || ') - ' || 
+        `$\bullet$ ' || video\_record.name || ' (Sortie le : ' || video\_record.release\_date || ') - ' ||
             video_record.description || E'\n';
     END LOOP;
 
+    -- Afficher le texte final de la newsletter
     RAISE NOTICE 'Newsletter Hebdomadaire : %', 
-    E'Voici les nouvelles sorties de la semaine :\n\n' || weekly_releases || 
-    E'\nRestez à l\'écoute pour plus de mises à jour !';
+    E'Voici les nouvelles sorties de cette semaine :\n\n' || weekly_releases || 
+    E'\nRestez \`a l'\,\'ecoute pour plus de mises \`a jour !';
 
 END;
 $$;
 \end{lstlisting}
 
-\textbf{Utilisation} :
+\textbf{Utilisation :}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CALL generate_weekly_newsletter();
 \end{lstlisting}
 
-\subsection{Générer la liste des vidéos populaires recommandées pour un utilisateur}
+\textbf{Résultat :}
 
-\begin{lstlisting}[language=SQL]
+\begin{verbatim}
+Newsletter Hebdomadaire : 
+Voici les nouvelles sorties de cette semaine :
+
+• Vidéo Exemple 1 (Sortie le : 2024-11-27) - Une aventure palpitante.
+• Vidéo Exemple 2 (Sortie le : 2024-11-28) - Un drame réconfortant.
+
+Restez à l'écoute pour plus de mises à jour !
+\end{verbatim}
+
+\subsection*{3. Fonction pour recommander des vidéos populaires à un utilisateur}
+
+\begin{lstlisting}
 CREATE OR REPLACE FUNCTION recommend_videos(user_id_input INT)
 RETURNS TABLE (
     video_id INT,
@@ -571,7 +637,7 @@ BEGIN
     LEFT JOIN 
         video_viewings vv ON v.video_id = vv.video_id
     WHERE 
-        c.category_id = ANY(u.interested_categories)
+        c.category_id = ANY(u.interested_categories) -- Correspond aux cat'egories suivies par l'utilisateur
         AND v.status = 'Available'
     GROUP BY 
         v.video_id, v.name, v.description, v.release_date
@@ -582,60 +648,65 @@ END;
 $$ LANGUAGE plpgsql;
 \end{lstlisting}
 
-\textbf{Utilisation} :
+\textbf{Utilisation :}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 SELECT * FROM recommend_videos(1);
 \end{lstlisting}
 
-\section{Déclencheurs}
+\section*{Triggers}
 
-\subsection{Limiter les favoris à 300 vidéos par utilisateur}
+\subsection*{1. Limiter les favoris d'un utilisateur à 300 vidéos}
 
-\textbf{Étape 1 : Créer la Fonction de Déclenchement}
+\textbf{Étape 1 : Fonction de trigger}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CREATE OR REPLACE FUNCTION enforce_bookmark_limit()
 RETURNS TRIGGER AS $$
 BEGIN
+    -- V'erifier le nombre actuel de favoris pour l'utilisateur
     IF (
         SELECT COUNT(*) 
         FROM favorite_videos 
         WHERE user_id = NEW.user_id
     ) >= 300 THEN
-        RAISE EXCEPTION 'L\'utilisateur % ne peut pas avoir plus de 300 vidéos favorites.', NEW.user_id;
+        -- Lever une erreur si la limite est d'epass'ee
+        RAISE EXCEPTION 'L''utilisateur % ne peut pas marquer plus de 300 vid'eos comme favorites.', NEW.user_id;
     END IF;
 
+    -- Autoriser l'insertion si la limite n'est pas d'epass'ee
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 \end{lstlisting}
 
-\textbf{Étape 2 : Créer le Déclencheur}
+\textbf{Étape 2 : Création du trigger}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CREATE TRIGGER check_bookmark_limit
 BEFORE INSERT ON favorite_videos
 FOR EACH ROW
 EXECUTE FUNCTION enforce_bookmark_limit();
 \end{lstlisting}
 
-\textbf{Test} :
+\textbf{Test :}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 INSERT INTO favorite_videos (user_id, video_id)
 VALUES (1, 101);
 \end{lstlisting}
 
-Si l'utilisateur a déjà 300 favoris, l'insertion échouera avec le message :
+Si l'utilisateur a déjà 300 favoris, cette requête échouera avec :
 
-\textit{ERREUR : L'utilisateur 1 ne peut pas avoir plus de 300 vidéos favorites.}
+\begin{verbatim}
+ERREUR : L'utilisateur 1 ne peut pas marquer plus de 300 vidéos comme favorites.
+\end{verbatim}
 
-\subsection{Archivage des vidéos supprimées}
+\subsection*{2. Archiver une vidéo supprimée}
 
-\textbf{Étape 1 : Créer la Table d'Archive}
+\textbf{Étape 1 : Création de la table d'archive}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CREATE TABLE archived_videos (
     video_id INT PRIMARY KEY,
     name VARCHAR(100),
@@ -649,12 +720,13 @@ CREATE TABLE archived_videos (
 );
 \end{lstlisting}
 
-\textbf{Étape 2 : Créer la Fonction de Déclenchement}
+\textbf{Étape 2 : Fonction de trigger}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CREATE OR REPLACE FUNCTION archive_video_before_delete()
 RETURNS TRIGGER AS $$
 BEGIN
+    -- Ins'erer les donn'ees de la vid'eo dans la table d'archive
     INSERT INTO archived_videos (
         video_id, 
         name, 
@@ -676,197 +748,209 @@ BEGIN
         OLD.image_format
     );
 
+    -- Autoriser la suppression
     RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 \end{lstlisting}
 
-\textbf{Étape 3 : Créer le Déclencheur}
+\textbf{Étape 3 : Création du trigger}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CREATE TRIGGER archive_video_on_delete
 BEFORE DELETE ON videos
 FOR EACH ROW
 EXECUTE FUNCTION archive_video_before_delete();
 \end{lstlisting}
 
-\textbf{Test} :
+\textbf{Test :}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
+-- Supprimer une vid'eo
 DELETE FROM videos WHERE video_id = 1;
 
+-- V'erifier si la vid'eo est archiv'ee
 SELECT * FROM archived_videos WHERE video_id = 1;
 \end{lstlisting}
 
-\subsection{Limiter les visionnages à 3 par minute par utilisateur}
+\subsection*{3. Limiter les visionnages d'un utilisateur à 3 par minute}
 
-\textbf{Étape 1 : Créer la Fonction de Déclenchement}
+\textbf{Étape 1 : Fonction de trigger}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CREATE OR REPLACE FUNCTION enforce_viewing_limit()
 RETURNS TRIGGER AS $$
 DECLARE
     recent_view_count INT;
 BEGIN
+    -- Compter le nombre de visionnages par le m\^eme utilisateur dans la derni'ere minute
     SELECT COUNT(*) INTO recent_view_count
     FROM video_viewings
     WHERE user_id = NEW.user_id
       AND viewing_timestamp >= NOW() - INTERVAL '1 minute';
 
+    -- Lever une exception si le nombre d'epasse 3
     IF recent_view_count >= 3 THEN
-        RAISE EXCEPTION 'L\'utilisateur % ne peut pas lancer plus de 3 visionnages par minute.', NEW.user_id;
+        RAISE EXCEPTION 'L''utilisateur % ne peut pas lancer plus de 3 visionnages par minute.', NEW.user_id;
     END IF;
 
+    -- Autoriser le nouveau visionnage si la limite n'est pas d'epass'ee
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 \end{lstlisting}
 
-\textbf{Étape 2 : Créer le Déclencheur}
+\textbf{Étape 2 : Création du trigger}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 CREATE TRIGGER check_viewing_limit
 BEFORE INSERT ON video_viewings
 FOR EACH ROW
 EXECUTE FUNCTION enforce_viewing_limit();
 \end{lstlisting}
 
-\textbf{Test} :
+\textbf{Test :}
 
-\begin{lstlisting}[language=SQL]
+\begin{lstlisting}
 -- Simuler trois visionnages en une minute pour un utilisateur
-INSERT INTO video_viewings (user_id, video_id, viewing_timestamp) VALUES (1, 101, NOW());
-INSERT INTO video_viewings (user_id, video_id, viewing_timestamp) VALUES (1, 102, NOW());
-INSERT INTO video_viewings (user_id, video_id, viewing_timestamp) VALUES (1, 103, NOW());
+INSERT INTO video_viewings (user_id, video_id) VALUES (1, 101);
+INSERT INTO video_viewings (user_id, video_id) VALUES (1, 102);
+INSERT INTO video_viewings (user_id, video_id) VALUES (1, 103);
 
--- Tenter un quatrième visionnage dans la même minute
-INSERT INTO video_viewings (user_id, video_id, viewing_timestamp) VALUES (1, 104, NOW());
+-- Tenter un quatri'eme visionnage dans la m\^eme minute
+INSERT INTO video_viewings (user_id, video_id) VALUES (1, 104);
 \end{lstlisting}
 
-Cela échouera avec le message :
+\textbf{Résultat :}
 
-\textit{ERREUR : L'utilisateur 1 ne peut pas lancer plus de 3 visionnages par minute.}
+\begin{verbatim}
+ERREUR : L'utilisateur 1 ne peut pas lancer plus de 3 visionnages par minute.
+\end{verbatim}
 
-\section{Index Proposés}
+\section*{Indexes suggérés}
 
-\begin{itemize}
-    \item \textbf{Table Utilisateurs (users)}
-    \begin{lstlisting}[language=SQL]
-    CREATE UNIQUE INDEX idx_users_login ON users(login);
-    CREATE UNIQUE INDEX idx_users_email ON users(email);
-    CREATE INDEX idx_users_interested_categories ON users USING gin(interested_categories);
-    \end{lstlisting}
-    \item \textbf{Table Catégories (categories)}
-    \begin{lstlisting}[language=SQL]
-    CREATE UNIQUE INDEX idx_categories_name ON categories(name);
-    \end{lstlisting}
-    \item \textbf{Table Programmes (programs)}
-    \begin{lstlisting}[language=SQL]
-    CREATE INDEX idx_programs_category_id ON programs(category_id);
-    \end{lstlisting}
-    \item \textbf{Table Vidéos (videos)}
-    \begin{lstlisting}[language=SQL]
-    CREATE INDEX idx_videos_program_id ON videos(program_id);
-    CREATE INDEX idx_videos_status ON videos(status);
-    CREATE INDEX idx_videos_release_date ON videos(release_date);
-    \end{lstlisting}
-    \item \textbf{Table Vidéos Favorites (favorite_videos)}
-    \begin{lstlisting}[language=SQL]
-    CREATE UNIQUE INDEX idx_favorite_videos_user_video ON favorite_videos(user_id, video_id);
-    CREATE INDEX idx_favorite_videos_video_id ON favorite_videos(video_id);
-    \end{lstlisting}
-    \item \textbf{Table Visionnages Vidéo (video_viewings)}
-    \begin{lstlisting}[language=SQL]
-    CREATE INDEX idx_video_viewings_user_timestamp ON video_viewings(user_id, viewing_timestamp);
-    CREATE INDEX idx_video_viewings_video_id ON video_viewings(video_id);
-    \end{lstlisting}
-    \item \textbf{Table Suggestions de Visionnage (viewing_suggestions)}
-    \begin{lstlisting}[language=SQL]
-    CREATE INDEX idx_viewing_suggestions_category_video ON viewing_suggestions(category_id, video_id);
-    \end{lstlisting}
-    \item \textbf{Table Programmes Abonnés (subscribed_programs)}
-    \begin{lstlisting}[language=SQL]
-    CREATE UNIQUE INDEX idx_subscribed_programs_user_program ON subscribed_programs(user_id, program_id);
-    CREATE INDEX idx_subscribed_programs_program_id ON subscribed_programs(program_id);
-    \end{lstlisting}
-\end{itemize}
+\subsection*{1. Table Utilisateurs (users)}
 
-\section{Définitions des Contraintes d'Intégrité}
+\begin{lstlisting}
+CREATE UNIQUE INDEX idx_users_login ON users(login);
+CREATE UNIQUE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_interested_categories ON users USING gin(interested_categories);
+\end{lstlisting}
 
-\subsection{Table Utilisateurs}
+\subsection*{2. Table Catégories (categories)}
 
-\begin{itemize}
-    \item \textbf{Contrainte d'unicité sur le login} : \texttt{UNIQUE (login)}
-    \item \textbf{Contrainte d'unicité sur l'email} : \texttt{UNIQUE (email)}
-    \item \textbf{Contrainte de non-nullité sur le login et le mot de passe}
-    \item \textbf{Contrainte sur la date de naissance valide} : \texttt{date\_of\_birth <= CURRENT\_DATE}
-\end{itemize}
+\begin{lstlisting}
+CREATE UNIQUE INDEX idx_categories_name ON categories(name);
+\end{lstlisting}
 
-\subsection{Table Catégories}
+\subsection*{3. Table Programmes (programs)}
 
-\begin{itemize}
-    \item \textbf{Contrainte d'unicité sur le nom de la catégorie} : \texttt{UNIQUE (name)}
-    \item \textbf{Contrainte de non-nullité sur le nom}
-\end{itemize}
+\begin{lstlisting}
+CREATE INDEX idx_programs_category_id ON programs(category_id);
+\end{lstlisting}
 
-\subsection{Table Programmes}
+\subsection*{4. Table Vidéos (videos)}
 
-\begin{itemize}
-    \item \textbf{Contrainte de non-nullité sur le nom du programme}
-    \item \textbf{Contrainte de clé étrangère vers Catégories} : \texttt{FOREIGN KEY (category\_id) REFERENCES categories(category\_id)}
-\end{itemize}
+\begin{lstlisting}
+CREATE INDEX idx_videos_program_id ON videos(program_id);
+CREATE INDEX idx_videos_status ON videos(status);
+CREATE INDEX idx_videos_release_date ON videos(release_date);
+\end{lstlisting}
 
-\subsection{Table Vidéos}
+\subsection*{5. Table Vid'eos Favorites (favorite\_videos)}
 
-\begin{itemize}
-    \item \textbf{Contrainte de non-nullité sur le nom, la durée et la date de sortie}
-    \item \textbf{Contrainte sur le statut valide} : \texttt{status IN ('Available', 'Archived')}
-    \item \textbf{Contrainte sur la date de sortie valide} : \texttt{release\_date <= CURRENT\_DATE}
-    \item \textbf{Contrainte de clé étrangère vers Programmes} : \texttt{FOREIGN KEY (program\_id) REFERENCES programs(program\_id)}
-\end{itemize}
+\begin{lstlisting}
+CREATE UNIQUE INDEX idx_favorite_videos_user_video ON favorite_videos(user_id, video_id);
+CREATE INDEX idx_favorite_videos_video_id ON favorite_videos(video_id);
+\end{lstlisting}
 
-\subsection{Table Vidéos Favorites}
+\subsection*{6. Table Visionnage Vid'eo (video\_viewings)}
 
-\begin{itemize}
-    \item \textbf{Contrainte de clé primaire} : \texttt{PRIMARY KEY (user\_id, video\_id)}
-    \item \textbf{Contraintes de clé étrangère} :
-    \begin{itemize}
-        \item \texttt{FOREIGN KEY (user\_id) REFERENCES users(user\_id)}
-        \item \texttt{FOREIGN KEY (video\_id) REFERENCES videos(video\_id)}
-    \end{itemize}
-\end{itemize}
+\begin{lstlisting}
+CREATE INDEX idx_video_viewings_user_timestamp ON video_viewings(user_id, viewing_timestamp);
+CREATE INDEX idx_video_viewings_video_id ON video_viewings(video_id);
+\end{lstlisting}
 
-\subsection{Table Visionnages Vidéo}
+\subsection*{7. Table Suggestions de Visionnage (viewing\_suggestions)}
 
-\begin{itemize}
-    \item \textbf{Contrainte de clé primaire} : \texttt{PRIMARY KEY (viewing\_id)}
-    \item \textbf{Contraintes de clé étrangère} :
-    \begin{itemize}
-        \item \texttt{FOREIGN KEY (user\_id) REFERENCES users(user\_id)}
-        \item \texttt{FOREIGN KEY (video\_id) REFERENCES videos(video\_id)}
-    \end{itemize}
-\end{itemize}
+\begin{lstlisting}
+CREATE INDEX idx_viewing_suggestions_category_video ON viewing_suggestions(category_id, video_id);
+\end{lstlisting}
 
-\subsection{Table Suggestions de Visionnage}
+\subsection*{8. Table Programmes Abonn'es (subscribed\_programs)}
 
-\begin{itemize}
-    \item \textbf{Contrainte de clé primaire} : \texttt{PRIMARY KEY (suggestion\_id)}
-    \item \textbf{Contraintes de clé étrangère} :
-    \begin{itemize}
-        \item \texttt{FOREIGN KEY (category\_id) REFERENCES categories(category\_id)}
-        \item \texttt{FOREIGN KEY (video\_id) REFERENCES videos(video\_id)}
-    \end{itemize}
-\end{itemize}
+\begin{lstlisting}
+CREATE UNIQUE INDEX idx_subscribed_programs_user_program ON subscribed_programs(user_id, program_id);
+CREATE INDEX idx_subscribed_programs_program_id ON subscribed_programs(program_id);
+\end{lstlisting}
 
-\subsection{Table Programmes Abonnés}
+\section*{Définitions des contraintes d'intégrité}
 
-\begin{itemize}
-    \item \textbf{Contrainte de clé primaire} : \texttt{PRIMARY KEY (user\_id, program\_id)}
-    \item \textbf{Contraintes de clé étrangère} :
-    \begin{itemize}
-        \item \texttt{FOREIGN KEY (user\_id) REFERENCES users(user\_id)}
-        \item \texttt{FOREIGN KEY (program\_id) REFERENCES programs(program\_id)}
-    \end{itemize}
-\end{itemize}
+\subsection*{1. Table Utilisateurs}
+
+\begin{lstlisting}
+CONSTRAINT unique_login UNIQUE (login),
+CONSTRAINT unique_email UNIQUE (email),
+CONSTRAINT not_null_login CHECK (login IS NOT NULL),
+CONSTRAINT not_null_password CHECK (password IS NOT NULL),
+CONSTRAINT valid_date_of_birth CHECK (date_of_birth <= CURRENT_DATE)
+\end{lstlisting}
+
+\subsection*{2. Table Catégories}
+
+\begin{lstlisting}
+CONSTRAINT unique_category_name UNIQUE (name),
+CONSTRAINT not_null_category_name CHECK (name IS NOT NULL)
+\end{lstlisting}
+
+\subsection*{3. Table Programmes}
+
+\begin{lstlisting}
+CONSTRAINT not_null_program_name CHECK (name IS NOT NULL),
+CONSTRAINT fk_program_category FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE SET NULL
+\end{lstlisting}
+
+\subsection*{4. Table Vidéos}
+
+\begin{lstlisting}
+CONSTRAINT not_null_video_name CHECK (name IS NOT NULL),
+CONSTRAINT not_null_video_duration CHECK (duration IS NOT NULL),
+CONSTRAINT not_null_video_release_date CHECK (release_date IS NOT NULL),
+CONSTRAINT valid_status CHECK (status IN ('Available', 'Archived')),
+CONSTRAINT valid_release_date CHECK (release_date <= CURRENT_DATE),
+CONSTRAINT fk_video_program FOREIGN KEY (program_id) REFERENCES programs(program_id) ON DELETE CASCADE
+\end{lstlisting}
+
+\subsection*{5. Table Vidéos Favorites}
+
+\begin{lstlisting}
+CONSTRAINT pk_favorite_videos PRIMARY KEY (user_id, video_id),
+CONSTRAINT fk_favorite_video_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+CONSTRAINT fk_favorite_video_video FOREIGN KEY (video_id) REFERENCES videos(video_id) ON DELETE CASCADE
+\end{lstlisting}
+
+\subsection*{6. Table Visionnage Vidéo}
+
+\begin{lstlisting}
+CONSTRAINT pk_video_viewings PRIMARY KEY (viewing_id),
+CONSTRAINT fk_viewing_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+CONSTRAINT fk_viewing_video FOREIGN KEY (video_id) REFERENCES videos(video_id) ON DELETE CASCADE
+\end{lstlisting}
+
+\subsection*{7. Table Suggestions de Visionnage}
+
+\begin{lstlisting}
+CONSTRAINT pk_viewing_suggestions PRIMARY KEY (suggestion_id),
+CONSTRAINT fk_suggestion_category FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE,
+CONSTRAINT fk_suggestion_video FOREIGN KEY (video_id) REFERENCES videos(video_id) ON DELETE CASCADE
+\end{lstlisting}
+
+\subsection*{8. Table Programmes Abonnés}
+
+\begin{lstlisting}
+CONSTRAINT pk_subscribed_programs PRIMARY KEY (user_id, program_id),
+CONSTRAINT fk_subscribed_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+CONSTRAINT fk_subscribed_program FOREIGN KEY (program_id) REFERENCES programs(program_id) ON DELETE CASCADE
+\end{lstlisting}
 
 \end{document}
