@@ -255,11 +255,11 @@ CREATE TABLE users (
     last_name VARCHAR(50),
     date_of_birth DATE,
     email VARCHAR(100) UNIQUE,
-    interested_categories TEXT[], -- Tableau de cat'egories
+    interested_categories TEXT[], -- Tableau de categories
     newsletter_subscription BOOLEAN DEFAULT FALSE
 );
 
--- 2. Table Cat'egories
+-- 2. Table Categories
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
@@ -272,7 +272,7 @@ CREATE TABLE programs (
     category_id INT REFERENCES categories(category_id) ON DELETE SET NULL
 );
 
--- 4. Table Vid'eos
+-- 4. Table Videos
 CREATE TABLE videos (
     video_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -286,14 +286,14 @@ CREATE TABLE videos (
     program_id INT REFERENCES programs(program_id) ON DELETE CASCADE
 );
 
--- 5. Table Vid'eos Favorites (Relation Plusieurs-`a-plusieurs entre Utilisateurs et Vid'eos)
+-- 5. Table Videos Favorites (Relation Plusieurs-a-plusieurs entre Utilisateurs et Videos)
 CREATE TABLE favorite_videos (
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
     video_id INT REFERENCES videos(video_id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, video_id)
 );
 
--- 6. Table Visionnage Vid'eo
+-- 6. Table Visionnage Video
 CREATE TABLE video_viewings (
     viewing_id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
@@ -309,7 +309,7 @@ CREATE TABLE viewing_suggestions (
     video_id INT REFERENCES videos(video_id) ON DELETE CASCADE
 );
 
--- 8. Table Programmes Abonn'es (Relation Plusieurs-`a-plusieurs entre Utilisateurs et Programmes)
+-- 8. Table Programmes Abonnes (Relation Plusieurs-a-plusieurs entre Utilisateurs et Programmes)
 CREATE TABLE subscribed_programs (
     user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
     program_id INT REFERENCES programs(program_id) ON DELETE CASCADE,
@@ -558,12 +558,12 @@ CREATE OR REPLACE PROCEDURE generate_weekly_newsletter()
 LANGUAGE plpgsql
 AS $$
 DECLARE
-    current_week_start DATE := DATE_TRUNC('week', CURRENT_DATE); -- D'ebut de la semaine en cours
+    current_week_start DATE := DATE_TRUNC('week', CURRENT_DATE); -- Debut de la semaine en cours
     current_week_end DATE := current_week_start + INTERVAL '6 days'; -- Fin de la semaine en cours
     weekly_releases TEXT := ''; -- Accumulateur pour les sorties de la semaine
     video_record RECORD;
 BEGIN
-    -- Parcourir toutes les sorties vid'eo de la semaine
+    -- Parcourir toutes les sorties video de la semaine
     FOR video_record IN 
         SELECT 
             name, 
@@ -574,16 +574,18 @@ BEGIN
         WHERE 
             release_date BETWEEN current_week_start AND current_week_end
     LOOP
-        -- Ajouter chaque vid'eo au texte de la newsletter
+        -- Ajouter chaque video au texte de la newsletter
         weekly_releases := weekly_releases || 
-        `$\bullet$ ' || video\_record.name || ' (Sortie le : ' || video\_record.release\_date || ') - ' ||
-            video_record.description || E'\n';
+            '* ' || video_record.name || 
+            ' (Released on: ' || video_record.release_date || ') - ' || 
+            video_record.description || 
+            E'\n';
     END LOOP;
 
     -- Afficher le texte final de la newsletter
     RAISE NOTICE 'Newsletter Hebdomadaire : %', 
     E'Voici les nouvelles sorties de cette semaine :\n\n' || weekly_releases || 
-    E'\nRestez \`a l'\,\'ecoute pour plus de mises \`a jour !';
+    E'\nRestez a l'ecoute pour plus de mises a jour !';
 
 END;
 $$;
@@ -637,7 +639,7 @@ BEGIN
     LEFT JOIN 
         video_viewings vv ON v.video_id = vv.video_id
     WHERE 
-        c.category_id = ANY(u.interested_categories) -- Correspond aux cat'egories suivies par l'utilisateur
+        c.category_id = ANY(u.interested_categories) -- Correspond aux categories suivies par l'utilisateur
         AND v.status = 'Available'
     GROUP BY 
         v.video_id, v.name, v.description, v.release_date
@@ -664,17 +666,17 @@ SELECT * FROM recommend_videos(1);
 CREATE OR REPLACE FUNCTION enforce_bookmark_limit()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- V'erifier le nombre actuel de favoris pour l'utilisateur
+    -- Verifier le nombre actuel de favoris pour l'utilisateur
     IF (
         SELECT COUNT(*) 
         FROM favorite_videos 
         WHERE user_id = NEW.user_id
     ) >= 300 THEN
-        -- Lever une erreur si la limite est d'epass'ee
-        RAISE EXCEPTION 'L''utilisateur % ne peut pas marquer plus de 300 vid'eos comme favorites.', NEW.user_id;
+        -- Lever une erreur si la limite est depassee
+        RAISE EXCEPTION 'L'utilisateur % ne peut pas marquer plus de 300 videos comme favorites.', NEW.user_id;
     END IF;
 
-    -- Autoriser l'insertion si la limite n'est pas d'epass'ee
+    -- Autoriser l'insertion si la limite n'est pas depassee
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -726,7 +728,7 @@ CREATE TABLE archived_videos (
 CREATE OR REPLACE FUNCTION archive_video_before_delete()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- Ins'erer les donn'ees de la vid'eo dans la table d'archive
+    -- Inserer les donnees de la video dans la table d'archive
     INSERT INTO archived_videos (
         video_id, 
         name, 
@@ -766,10 +768,10 @@ EXECUTE FUNCTION archive_video_before_delete();
 \textbf{Test :}
 
 \begin{lstlisting}
--- Supprimer une vid'eo
+-- Supprimer une video
 DELETE FROM videos WHERE video_id = 1;
 
--- V'erifier si la vid'eo est archiv'ee
+-- Verifier si la video est archivee
 SELECT * FROM archived_videos WHERE video_id = 1;
 \end{lstlisting}
 
@@ -783,18 +785,18 @@ RETURNS TRIGGER AS $$
 DECLARE
     recent_view_count INT;
 BEGIN
-    -- Compter le nombre de visionnages par le m\^eme utilisateur dans la derni'ere minute
+    -- Compter le nombre de visionnages par le meme utilisateur dans la derniere minute
     SELECT COUNT(*) INTO recent_view_count
     FROM video_viewings
     WHERE user_id = NEW.user_id
       AND viewing_timestamp >= NOW() - INTERVAL '1 minute';
 
-    -- Lever une exception si le nombre d'epasse 3
+    -- Lever une exception si le nombre depasse 3
     IF recent_view_count >= 3 THEN
         RAISE EXCEPTION 'L''utilisateur % ne peut pas lancer plus de 3 visionnages par minute.', NEW.user_id;
     END IF;
 
-    -- Autoriser le nouveau visionnage si la limite n'est pas d'epass'ee
+    -- Autoriser le nouveau visionnage si la limite n'est pas depassee
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -817,7 +819,7 @@ INSERT INTO video_viewings (user_id, video_id) VALUES (1, 101);
 INSERT INTO video_viewings (user_id, video_id) VALUES (1, 102);
 INSERT INTO video_viewings (user_id, video_id) VALUES (1, 103);
 
--- Tenter un quatri'eme visionnage dans la m\^eme minute
+-- Tenter un quatrieme visionnage dans la meme minute
 INSERT INTO video_viewings (user_id, video_id) VALUES (1, 104);
 \end{lstlisting}
 
@@ -857,14 +859,14 @@ CREATE INDEX idx_videos_status ON videos(status);
 CREATE INDEX idx_videos_release_date ON videos(release_date);
 \end{lstlisting}
 
-\subsection*{5. Table Vid'eos Favorites (favorite\_videos)}
+\subsection*{5. Table Vidéos Favorites (favorite\_videos)}
 
 \begin{lstlisting}
 CREATE UNIQUE INDEX idx_favorite_videos_user_video ON favorite_videos(user_id, video_id);
 CREATE INDEX idx_favorite_videos_video_id ON favorite_videos(video_id);
 \end{lstlisting}
 
-\subsection*{6. Table Visionnage Vid'eo (video\_viewings)}
+\subsection*{6. Table Visionnage Vidéo (video\_viewings)}
 
 \begin{lstlisting}
 CREATE INDEX idx_video_viewings_user_timestamp ON video_viewings(user_id, viewing_timestamp);
@@ -877,7 +879,7 @@ CREATE INDEX idx_video_viewings_video_id ON video_viewings(video_id);
 CREATE INDEX idx_viewing_suggestions_category_video ON viewing_suggestions(category_id, video_id);
 \end{lstlisting}
 
-\subsection*{8. Table Programmes Abonn'es (subscribed\_programs)}
+\subsection*{8. Table Programmes Abonnés (subscribed\_programs)}
 
 \begin{lstlisting}
 CREATE UNIQUE INDEX idx_subscribed_programs_user_program ON subscribed_programs(user_id, program_id);

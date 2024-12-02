@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.8.31)  2 DEC 2024 23:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2024.8.31)  3 DEC 2024 00:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -447,16 +447,16 @@ File: photo3.jpg Graphic file (type jpg)
 Package pdftex.def Info: photo3.jpg  used on input line 343.
 (pdftex.def)             Requested size: 362.37569pt x 396.74146pt.
  [6 <./photo1.jpg> <./photo2.jpg>] [7 <./photo3.jpg>] [8] [9] [10] [11]
-LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 608.
+LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 610.
  (C:\Users\Lord\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmtt.fd
 File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 ) [12]
-Overfull \hbox (40.9115pt too wide) in paragraph at lines 703--703
+Overfull \hbox (40.9115pt too wide) in paragraph at lines 705--705
 []\T1/cmtt/m/n/12 ERREUR : L'utilisateur 1 ne peut pas marquer plus de 300 vidéos comme favorites.[] 
  []
 
 [13] [14]
-Overfull \hbox (22.39102pt too wide) in paragraph at lines 828--828
+Overfull \hbox (22.39102pt too wide) in paragraph at lines 830--830
 []\T1/cmtt/m/n/12 ERREUR : L'utilisateur 1 ne peut pas lancer plus de 3 visionnages par minute.[] 
  []
 
@@ -469,17 +469,17 @@ Package rerunfilecheck Info: File `rapport.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 15323 strings out of 474486
- 237269 string characters out of 5744227
+ 15316 strings out of 474486
+ 237200 string characters out of 5744227
  2093542 words of memory out of 5000000
- 36885 multiletter control sequences out of 15000+600000
+ 36876 multiletter control sequences out of 15000+600000
  568818 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,6n,79p,638b,2203s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tctt1200.pk> <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1000.pk> <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0600.pk> <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk> <C:\Users\Lord\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm2074.pk>
-Output written on rapport.pdf (18 pages, 602966 bytes).
+Output written on rapport.pdf (18 pages, 602504 bytes).
 PDF statistics:
- 1154 PDF objects out of 1200 (max. 8388607)
- 551 named destinations out of 1000 (max. 500000)
+ 1155 PDF objects out of 1200 (max. 8388607)
+ 553 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
