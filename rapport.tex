@@ -829,6 +829,18 @@ INSERT INTO video_viewings (user_id, video_id) VALUES (1, 104);
 ERREUR : L'utilisateur 1 ne peut pas lancer plus de 3 visionnages par minute.
 \end{verbatim}
 
+\textbf{Autre test pour vérifier son exactitude lors de l'insertion sur une durée de plus d'une minute :}
+
+\begin{lstlisting}
+
+INSERT INTO video_viewings (user_id, video_id, viewing_timestamp) VALUES (3, 301, NOW());
+INSERT INTO video_viewings (user_id, video_id, viewing_timestamp) VALUES (3, 302, NOW());
+INSERT INTO video_viewings (user_id, video_id, viewing_timestamp) VALUES (3, 303, NOW());
+-- Wait for 61 seconds
+INSERT INTO video_viewings (user_id, video_id, viewing_timestamp) VALUES (3, 304, NOW() + INTERVAL '61 seconds');
+
+    \end{lstlisting}
+
 \section*{Indexes suggérés}
 
 \subsection*{1. Table Utilisateurs (users)}
